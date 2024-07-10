@@ -1,11 +1,11 @@
-package com.lox.inter;
+package com.jlox.src;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.lox.inter.TokenType.*;
+import static com.jlox.src.TokenType.*;
 
 class Scanner {
     private final String source;

@@ -1,4 +1,4 @@
-package com.lox.inter;
+package com.jlox.src;
 
 class Token {
     final TokenType type;
