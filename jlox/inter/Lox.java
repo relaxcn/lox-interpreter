@@ -1,4 +1,4 @@
-package com.lox;
+package com.lox.inter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
