@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.callanchen.lox.TokenType.*; 
+import static com.callanchen.lox.TokenType.*;
 
 class Scanner {
   private final String source;
@@ -16,6 +16,7 @@ class Scanner {
 
   private static final Map<String, TokenType> keywords;
 
+  // keywords string -> TokenType
   static {
     keywords = new HashMap<>();
     keywords.put("and",    AND);
@@ -99,7 +100,7 @@ class Scanner {
       case '\t':
         // Ignore whitespace.
         break;
-      
+
       // Handle newlines and increment the line counter.
       case '\n':
         line++;
@@ -126,7 +127,7 @@ class Scanner {
     String text = source.substring(start, current);
     TokenType type = keywords.get(text);
     // If the identifier a keyword, use the keyword's TokenType; otherwise, use IDENTIFIER.
-    if (type == null) 
+    if (type == null)
       type = IDENTIFIER;
 
     addToken(type);
@@ -198,7 +199,7 @@ class Scanner {
 
   private boolean isDigit(char c) {
     return c >= '0' && c <= '9';
-  } 
+  }
 
   private char advance() {
     return source.charAt(current++);
