@@ -43,7 +43,7 @@ public class GenerateAst {
 
       // The base accept() method.
       writer.println();
-      writer.println("    abstract <R> R accept(Visitor<R> visitor);");
+      writer.println("  abstract <R> R accept(Visitor<R> visitor);");
 
       writer.println("}");
       writer.close();
@@ -51,18 +51,18 @@ public class GenerateAst {
 
   private static void defineVisitor(
       PrintWriter writer, String baseName, List<String> types) {
-          writer.println(" interface Visitor<R> {");
+          writer.println("  interface Visitor<R> {");
           for (String type : types) {
               String typeName = type.split(":")[0].trim();
               // R visitBinaryExpr(Binary binary);
-              writer.println("      R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
+              writer.println("    R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
           }
           writer.println("  }");
       }
 
   private static void defineType(PrintWriter writer, String baseName,
       String className, String fieldList) {
-          writer.println(" static class " + className + " extends " + baseName + " {");
+          writer.println("  static class " + className + " extends " + baseName + " {");
 
           // Constructor
           writer.println("    " + className + "(" + fieldList + ") {");
@@ -74,20 +74,20 @@ public class GenerateAst {
               writer.println("      this." + name + " = " + name + ";");
           }
 
-          writer.println("  }");
+          writer.println("    }");
 
           // Visitor pattern.
           writer.println();
-          writer.println("      @Override");
-          writer.println("      <R> R accept(Visitor<R> visitor) {");
-          writer.println("         return visitor.visit" + className + baseName + "(this);");
-          writer.println("      }");
+          writer.println("    @Override");
+          writer.println("    <R> R accept(Visitor<R> visitor) {");
+          writer.println("      return visitor.visit" + className + baseName + "(this);");
+          writer.println("    }");
 
           writer.println();
           for (String field : fields) {
-              writer.println("      final " + field + ";");
+              writer.println("    final " + field + ";");
           }
 
-          writer.println("    }");
+          writer.println("  }");
   }
 }
