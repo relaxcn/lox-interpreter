@@ -31,6 +31,9 @@ public class GenerateAst {
       writer.println();
       writer.println("abstract class " + baseName + " {");
 
+      // Define abstract Visitor base class
+      defineVisitor(writer, baseName, types);
+
       // Generate subclass for each expression types
       for (String type: types) {
           String className = type.split(":")[0].trim();
@@ -38,9 +41,24 @@ public class GenerateAst {
           defineType(writer, baseName, className, fields);
       }
 
+      // The base accept() method.
+      writer.println();
+      writer.println("    abstract <R> R accept(Visitor<R> visitor);");
+
       writer.println("}");
       writer.close();
   }
+
+  private static void defineVisitor(
+      PrintWriter writer, String baseName, List<String> types) {
+          writer.println(" interface Visitor<R> {");
+          for (String type : types) {
+              String typeName = type.split(":")[0].trim();
+              // R visitBinaryExpr(Binary binary);
+              writer.println("      R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
+          }
+          writer.println("  }");
+      }
 
   private static void defineType(PrintWriter writer, String baseName,
       String className, String fieldList) {
@@ -52,11 +70,18 @@ public class GenerateAst {
           // Store parameters in fields.
           String[] fields = fieldList.split(", ");
           for (String field : fields)  {
-              String name = field.trim();
+              String name = field.split(" ")[1].trim();
               writer.println("      this." + name + " = " + name + ";");
           }
 
           writer.println("  }");
+
+          // Visitor pattern.
+          writer.println();
+          writer.println("      @Override");
+          writer.println("      <R> R accept(Visitor<R> visitor) {");
+          writer.println("         return visitor.visit" + className + baseName + "(this);");
+          writer.println("      }");
 
           writer.println();
           for (String field : fields) {
